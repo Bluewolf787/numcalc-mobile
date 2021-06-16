@@ -23,7 +23,8 @@ class MyApp extends StatelessWidget {
       saveThemesOnChange: true,
       loadThemeOnInit: true,
       themes: <AppTheme>[
-        CustomTheme().darkTheme(),
+        CustomTheme().defaultTheme(),
+        CustomTheme().greenTheme()
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
