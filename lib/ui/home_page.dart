@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:numcalc_mobile/utils/size_config.dart';
 import 'package:numcalc_mobile/widgets/button.dart';
 import 'package:numcalc_mobile/widgets/close_dialog.dart';
+import 'package:numcalc_mobile/widgets/expansion_panel_item.dart';
 import 'package:numcalc_mobile/widgets/input_field.dart';
+import 'package:numcalc_mobile/widgets/tables.dart';
 import 'package:theme_provider/theme_provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,6 +19,9 @@ class _HomePageState extends State<HomePage> {
 
   String _dropdownValue = 'Decimal';
   List<String> _numberalSystems = ['Decimal', 'Binary', 'Octal', 'Hexadecimal'];
+
+  bool _isResultVisibile = false;
+  List<Item> resultData = [Item(headerValue: '-', expandedValue: BinaryTable(calculation: '-', rest: '-', interimResult: '-',)), Item(headerValue: '-', expandedValue: FourRowTable(powerCalc: '-', restCalc: '-', rest: '-', interimResult: '-',))];
 
   @override
   void initState() {
@@ -69,14 +74,51 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-                ConvertButton(
-                  onPressed: () {
-                    setState(() {
-                      _editingController.text =  'Button pressed';
-                    });
-                  }
+                Padding(
+                  padding: EdgeInsets.only(bottom: SizeConfig.heightMultiplier * 4),
+                  child: ConvertButton(
+                    onPressed: () {
+                      setState(() {
+                        _editingController.text =  'Button pressed';
+                        _isResultVisibile = true;
+                      });
+                    }
+                  ),
                 ),
                 
+                Visibility(
+                  visible: _isResultVisibile,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: SizeConfig.widthMultiplier * 2, right: SizeConfig.widthMultiplier * 2),
+                    child: ExpansionPanelList(
+                      expansionCallback: (int index, bool isExpanded) {
+                        setState(() {
+                          resultData[index].isExpanded = !isExpanded;           
+                        });
+                      },
+                      children: resultData.map<ExpansionPanel>((Item item) {
+                        return ExpansionPanel(
+                          backgroundColor: ThemeProvider.themeOf(context).data.scaffoldBackgroundColor,
+                          headerBuilder: (BuildContext context, bool isExpanded) {
+                            return ListTile(
+                              title: Text(item.headerValue),
+                              trailing: IconButton(
+                                icon: Icon(Icons.copy),
+                                onPressed: () {
+                                  print('COPYED');
+                                },
+                              ),
+                            );
+                          },
+                          body: ListTile(
+                            title: item.expandedValue,
+                          ),
+                          isExpanded: item.isExpanded,
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
