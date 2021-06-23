@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:numcalc_mobile/utils/size_config.dart';
 import 'package:numcalc_mobile/widgets/expansion_panel_item.dart';
+import 'package:numcalc_mobile/widgets/snackbar.dart';
 import 'package:theme_provider/theme_provider.dart';
 
 class ResultList extends StatelessWidget {
@@ -9,13 +11,11 @@ class ResultList extends StatelessWidget {
     @required this.visible,
     @required this.expansionCallback,
     @required this.data,
-    @required this.onCopyPressed,
   }) : super(key: key);
 
   final bool visible;
   final Function(int, bool) expansionCallback;
   final List<Item> data;
-  final Function onCopyPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +26,20 @@ class ResultList extends StatelessWidget {
         padding: EdgeInsets.only(left: SizeConfig.widthMultiplier * 2, right: SizeConfig.widthMultiplier * 2),
         child: ExpansionPanelList(
           expansionCallback: expansionCallback,
-          children: data.map<ExpansionPanel>((Item item) {
+          children: data?.map<ExpansionPanel>((Item item) {
             return ExpansionPanel(
               backgroundColor: ThemeProvider.themeOf(context).data.scaffoldBackgroundColor,
               headerBuilder: (BuildContext context, bool isExpanded) {
                 return ListTile(
                   title: Text(item.headerValue),
+                  subtitle: Text(item.subtitle),
                   trailing: IconButton(
                     icon: Icon(Icons.copy),
-                    onPressed: onCopyPressed,
+                    onPressed: () {
+                      String copyText = item.headerValue.split(': ').last;
+                      Clipboard.setData(ClipboardData(text: copyText));
+                      CustomSnackbar.show(context, 'Copyed $copyText');
+                    },
                   ),
                 );
               },
@@ -43,7 +48,7 @@ class ResultList extends StatelessWidget {
               ),
               isExpanded: item.isExpanded,
             );
-          }).toList(),
+          })?.toList() ?? [],
         ),
       ),
     );

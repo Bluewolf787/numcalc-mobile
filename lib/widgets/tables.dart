@@ -77,7 +77,7 @@ class BinaryTable extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: Center(
                 child: Text(
-                  calculation.toUpperCase(),
+                  calculation,
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 12,
@@ -91,7 +91,7 @@ class BinaryTable extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: Center(
                 child: Text(
-                  rest.toUpperCase(),
+                  rest,
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 12,
@@ -105,7 +105,7 @@ class BinaryTable extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: Center(
                 child: Text(
-                  interimResult.toUpperCase(),
+                  interimResult,
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 12,
@@ -213,7 +213,7 @@ class FourRowTable extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: Center(
                 child: Text(
-                  powerCalc.toUpperCase(),
+                  powerCalc,
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 12,
@@ -227,7 +227,7 @@ class FourRowTable extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: Center(
                 child: Text(
-                  restCalc.toUpperCase(),
+                  restCalc,
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 12,
@@ -241,7 +241,7 @@ class FourRowTable extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: Center(
                 child: Text(
-                  rest.toUpperCase(),
+                  rest,
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 12,
@@ -255,7 +255,7 @@ class FourRowTable extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: Center(
                 child: Text(
-                  interimResult.toUpperCase(),
+                  interimResult,
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 12,
