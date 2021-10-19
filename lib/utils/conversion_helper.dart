@@ -38,7 +38,7 @@ class ConversionHelper {
             ),
             Item(
               headerValue: 'Octal Result: ${_octal['octalNum']}',
-              expandedValue: FourRowTable(
+              expandedValue: FourColumnTable(
                 powerCalc: _octal['powerCalc'],
                 restCalc: _octal['restCalc'],
                 rest: _octal['rest'],
@@ -48,7 +48,7 @@ class ConversionHelper {
             ),
             Item(
               headerValue: 'Hexadecimal Result: ${_hexadecimal['hexNum']}',
-              expandedValue: FourRowTable(
+              expandedValue: FourColumnTable(
                 powerCalc: _hexadecimal['powerCalc'],
                 restCalc: _hexadecimal['restCalc'],
                 rest: _hexadecimal['rest'],
@@ -62,7 +62,53 @@ class ConversionHelper {
           CustomSnackbar.show(context, 'Please enter a valid decimal number');
         break;
       case 'binary':
-        // Check for valid number 
+        // Check for valid number
+        bool _isValid = true;
+        for (int i = 0; i < value.length; i++) {
+          if (value[i] != '0' && value[i] != '1')
+          {
+            _isValid = false;
+            break;
+          }
+        }
+
+        if (_isValid) {
+          _decimal = _calculator.convertBinaryToDecimal(value);
+          _octal = _calculator.convertBinaryToOctal(value);
+          _hexadecimal = _calculator.convertBinaryToHexadecimal(value);
+
+          _dataResult = [
+            Item(
+              headerValue: 'Decimal Result: ${_decimal['decNum']}',
+              expandedValue: OneColumnTable(calculation: _decimal['calc'],),
+              subtitle: 'Base-10'
+            ),
+            Item(
+              headerValue: 'Octal Result: ${_octal['octNum']}',
+              expandedValue: ThreeColumnTable(
+                firstColumnHead: 'binary'.toUpperCase(),
+                firstColumnBody: _octal['binBlock'],
+                secondColumnHead: 'octal'.toUpperCase(),
+                secondColumnBody: _octal['octBlock'],
+                interimResult: _octal['interimResult'],
+              ),
+              subtitle: 'Base-8'
+            ),
+            Item(
+              headerValue: 'Hexadecimal Result ${_hexadecimal['hexNum']}',
+              expandedValue: ThreeColumnTable(
+                firstColumnHead: 'binary'.toUpperCase(),
+                firstColumnBody: _hexadecimal['binBlock'],
+                secondColumnHead: 'hexadecimal'.toUpperCase(),
+                secondColumnBody: _hexadecimal['hexBlock'],
+                interimResult: _hexadecimal['interimResult'],
+              ),
+              subtitle: 'Base-16'
+            ),
+          ];
+        }
+        else
+          CustomSnackbar.show(context, 'Please enter a valid binary number');
         break;
       case 'octal':
         // Check for valid number

@@ -38,8 +38,9 @@ class ResultList extends StatelessWidget {
                     onPressed: () {
                       String copyText = item.headerValue.split(': ').last;
                       Clipboard.setData(ClipboardData(text: copyText));
-                      CustomSnackbar.show(context, 'Copyed $copyText');
+                      CustomSnackbar.show(context, 'Copied $copyText');
                     },
+                    tooltip: 'Copy ${item.headerValue.split(' ').first} value',
                   ),
                 );
               },

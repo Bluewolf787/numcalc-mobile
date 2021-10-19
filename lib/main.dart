@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
         DeviceOrientation.portraitDown,
     ]);
     // Hide Statusbar
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return ThemeProvider(
       saveThemesOnChange: true,
       loadThemeOnInit: true,

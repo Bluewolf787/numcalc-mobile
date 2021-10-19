@@ -127,5 +127,100 @@ class ConversionCalculator {
 
     return output;
   }
+  
+  Map<String, String> convertBinaryToOctal(String value) {
+    Map<String, String> output = {'octNum': '0o', 'binBlock': '', 'octBlock': '', 'interimResult': ''};
+
+    Map<String, String> octalTable = {'000': '0', '001': '1', '010': '2', '011': '3', '100': '4', '101': '5', '110': '6', '111': '7'};
+
+    // Split the binary number into blocks with 3 digits
+    List<String> binSplit = [];
+    value = value.trim().replaceAll(RegExp(r'^0+(?!$)'), '');
+    while (value != '') {
+      if (value.length > 2) {
+        binSplit.add(value.substring(value.length - 3, value.length));
+        value = value.substring(0, value.length - 3);
+      }
+      else {
+        binSplit.add(value);
+        break;
+      }
+    }
+
+    List<String> binSplitReversed = new List.from(binSplit.reversed);
+    for (int i = 0; i < binSplitReversed.length; i++) {
+      // Fill up the blocks without 3 digits with 0's
+      var currentBlock = binSplitReversed[i].padLeft(3, '0');
+
+      // Search the Octal number for the binary blocks
+      output['octNum'] += octalTable[currentBlock];
+
+      output['binBlock'] += '$currentBlock\n';
+      output['octBlock'] += '${octalTable[currentBlock]}\n';
+      output['interimResult'] += '${output['octNum']}\n';
+    }
+
+    return output;
+  }
+
+  Map<String, String> convertBinaryToDecimal(String value) {
+    Map<String, String> output = {'decNum': '', 'calc': ''};
+    int decNum = 0;
+
+    value = value.trim().replaceAll(RegExp(r'^0+(?!$)'), '').split('').reversed.join('');
+    int exponent = 0;
+    for (int i = 0; i < value.length; i++) {
+      if (value[i] == '1') {
+        decNum += pow(2, exponent);
+
+        if (exponent + 1 == value.length)
+          output['calc'] += '2^$exponent = $decNum';
+        else
+          output['calc'] += '2^$exponent + ';
+
+        exponent += 1;
+      }
+      else
+        exponent += 1;
+    }
+
+    output['decNum'] = decNum.toString();
+    return output;
+  }
+
+  Map<String, String> convertBinaryToHexadecimal(String value) {
+    Map<String, String> output = {'hexNum': '0x', 'binBlock': '', 'hexBlock': '', 'interimResult': ''};
+  
+    Map<String, String> hexTable = {'0000': '0', '0001': '1', '0010': '2', '0011': '3', '0100': '4', '0101': '5', '0110'    : '6', '0111': '7', '1000': '8', '1001': '9', '1010': 'A', '1011': 'B', '1100': 'C', '1101': 'D', '11    10': 'E', '1111': 'F'};
+
+    // Split the binary number into blocks with 4 digits
+    List<String> binSplit = [];
+    value = value.trim().replaceAll(RegExp(r'^0+(?!$)'), '');
+    while (value != '') {
+      if (value.length > 3) {
+        binSplit.add(value.substring(value.length - 4, value.length));
+        value = value.substring(0, value.length - 4);
+      }
+      else {
+        binSplit.add(value);
+        break;
+      }
+    }
+
+    List<String> binSplitReversed = new List.from(binSplit.reversed);
+    for (int i = 0; i < binSplitReversed.length; i++) {
+      // Fill up the blocks without 4 digits with 0's
+      var currentBlock = binSplitReversed[i].padRight(4, '0');
+
+      // Search the Hexadecimal number for the binary blocks
+      output['hexNum'] += hexTable[currentBlock];
+
+      output['binBlock'] += '$currentBlock\n';
+      output['hexBlock'] += '${hexTable[currentBlock]}\n';
+      output['interimResult'] += '${output['hexNum']}\n';
+    }
+
+    return output;
+  }
 
 }
