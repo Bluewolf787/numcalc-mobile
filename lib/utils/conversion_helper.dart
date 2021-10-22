@@ -11,7 +11,7 @@ class ConversionHelper {
     Map<String, String> _decimal;
     Map<String, String> _binary;
     Map<String, String> _octal;
-    Map<String, String> _hexadecimal;
+    Map<String, dynamic> _hexadecimal;
 
     ConversionCalculator _calculator = new ConversionCalculator();
 
@@ -112,6 +112,51 @@ class ConversionHelper {
         break;
       case 'octal':
         // Check for valid number
+        try {
+          int intValue = int.parse(value);
+          for (int i = 0; i < value.length; i++) {
+            if (intValue >= 0 && int.parse(value[i]) <= 7)
+              continue;
+            else {
+              throw FormatException();
+            }
+          }
+        } on FormatException {
+          CustomSnackbar.show(context, 'Please enter a valid binary number');
+          break;
+        }
+
+        _decimal = _calculator.convertOctalToDecimal(value);
+        _binary = _calculator.convertOctalToBinary(value);
+        _hexadecimal = _calculator.convertOctalToHexadecimal(value);
+        
+        _dataResult = [
+          Item(
+            headerValue: 'Decimal Result: ${_decimal['decNum']}',
+            expandedValue: OneColumnTable(calculation: _decimal['calc'],),
+            subtitle: 'Base-10'
+          ),
+          Item(
+            headerValue: 'Binary Result: ${_binary['binNum']}',
+            expandedValue: ThreeColumnTable(
+              firstColumnHead: 'octal'.toUpperCase(),
+              firstColumnBody: _binary['octBlock'],
+              secondColumnHead: 'binary'.toUpperCase(),
+              secondColumnBody: _binary['binBlock'],
+              interimResult: _binary['interimResult'],
+            ),
+            subtitle: 'Base-2'
+          ),
+          Item(
+            headerValue: 'Hexadecimal Result: ${_hexadecimal['hexNum']}',
+            expandedValue: OneColumnTableWithSecondCalc(
+              calculation: '\nOctal to Decimal:\n${_hexadecimal['decCalc']}\n\nDecimal to Hexadecimal:\n',
+              secondaryCalculaction: _hexadecimal['hexCalc'],
+            ),
+            subtitle: 'Base-16'
+          ),
+        ];
+
         break;
       case 'hexadecimal':
         // Check for valid number

@@ -460,3 +460,72 @@ class FourColumnTable extends StatelessWidget {
     );
   }
 }
+
+class OneColumnTableWithSecondCalc extends StatelessWidget {
+    const OneColumnTableWithSecondCalc({
+      Key key,
+      @required this.calculation,
+      @required this.secondaryCalculaction,
+    }) : super(key: key);
+  
+    final String calculation;
+    final Widget secondaryCalculaction;
+
+    @override
+    Widget build(BuildContext context) {
+      return Table(
+        border: TableBorder(
+          horizontalInside: BorderSide(
+            width: 1,
+            color: ThemeProvider.themeOf(context).data.dividerColor,
+            style: BorderStyle.solid,
+          ),
+          verticalInside: BorderSide(
+            width: 1,
+            color: ThemeProvider.themeOf(context).data.dividerColor,
+            style: BorderStyle.solid,
+          ),
+        ),
+        defaultColumnWidth: FlexColumnWidth(),
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        children: <TableRow>[
+          TableRow(
+            children: <Widget>[
+              Center(
+                child: Text(
+                  'calculation'.toUpperCase(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: ThemeProvider.themeOf(context).data.primaryColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          TableRow(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    calculation,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300,
+                      color: ThemeProvider.themeOf(context).data.primaryColor,
+                    ),
+                  ),
+                  secondaryCalculaction,
+                ],
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+  }

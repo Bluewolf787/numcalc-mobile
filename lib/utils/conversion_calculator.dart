@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:numcalc_mobile/widgets/expansion_panel_item.dart';
+import 'package:numcalc_mobile/widgets/tables.dart';
+
 class ConversionCalculator {
 
   Map<String, String> convertDecimalToBinary(int value) {
@@ -210,9 +213,9 @@ class ConversionCalculator {
     List<String> binSplitReversed = new List.from(binSplit.reversed);
     for (int i = 0; i < binSplitReversed.length; i++) {
       // Fill up the blocks without 4 digits with 0's
-      var currentBlock = binSplitReversed[i].padRight(4, '0');
+      var currentBlock = binSplitReversed[i].padLeft(4, '0');
 
-      // Search the Hexadecimal number for the binary blocks
+      // Search the Hexadecimal number for the binary blocks 
       output['hexNum'] += hexTable[currentBlock];
 
       output['binBlock'] += '$currentBlock\n';
@@ -223,4 +226,63 @@ class ConversionCalculator {
     return output;
   }
 
-}
+  Map<String, String> convertOctalToDecimal(String value) {
+    Map<String, String> output = {'decNum': '', 'calc': ''};
+    int decNum = 0;
+
+    value = value.split('').reversed.join('');
+    int exponent = 0;
+    for (int i = 0; i < value.length; i++) {
+      int digit = int.parse(value[i]);
+      decNum += (pow(8, exponent) * digit);
+
+      if (exponent + 1 == value.length)
+        output['calc'] += '8^$exponent * $digit = $decNum';
+      else
+        output['calc'] += '8^$exponent * $digit + ';
+
+      exponent += 1;
+    }
+
+    output['decNum'] = decNum.toString();
+
+    return output;
+  }
+
+  Map<String, String> convertOctalToBinary(String value) {
+    Map<String, String> output = {'binNum': '0b', 'octBlock': '', 'binBlock': '', 'interimResult': ''};
+
+    Map<int, String> binTable = {0: '000', 1: '001', 2: '010', 3: '011', 4: '100', 5: '101', 6: '110', 7: '111'};
+
+    for (int i = 0; i < value.length; i++) {
+      int digit = int.parse(value[i]);
+      output['binNum'] += binTable[digit];
+      output['octBlock'] += '${digit.toString()}\n';
+      output['binBlock'] += '${binTable[digit]}\n';
+      output['interimResult'] += '${output['binNum']}\n';
+    }
+
+    output['binNum'] = output['binNum'].trimLeft().replaceAll(RegExp(r'^0+(?!$)'), '');
+
+    return output;
+  }
+
+  Map<String, dynamic> convertOctalToHexadecimal(String value) {
+    Map<String, dynamic> output = {'hexNum': '0x', 'decCalc': '', 'hexCalc': ''};
+
+    Map<String, String> octalToDecimal = convertOctalToDecimal(value);
+    Map<String, String> decimalToHexadecimal = convertDecimalToHexadecimal(int.parse(octalToDecimal['decNum']));
+
+    output['hexNum'] = decimalToHexadecimal['hexNum'];
+    output['decCalc'] = octalToDecimal['calc'];
+    output['hexCalc'] = FourColumnTable(
+      powerCalc: decimalToHexadecimal['powerCalc'],
+      restCalc: decimalToHexadecimal['restCalc'],
+      rest: decimalToHexadecimal['rest'],
+      interimResult: decimalToHexadecimal['interimResult'],
+    );
+
+    return output;
+  }
+
+} 
