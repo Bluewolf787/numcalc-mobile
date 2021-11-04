@@ -3,6 +3,7 @@ import 'package:numcalc_mobile/utils/conversion_calculator.dart';
 import 'package:numcalc_mobile/widgets/expansion_panel_item.dart';
 import 'package:numcalc_mobile/widgets/snackbar.dart';
 import 'package:numcalc_mobile/widgets/tables.dart';
+import 'package:theme_provider/theme_provider.dart';
 
 class ConversionHelper {
   List<Item> init(BuildContext context, String numberalSystem, String value) {
@@ -10,7 +11,7 @@ class ConversionHelper {
 
     Map<String, String> _decimal;
     Map<String, String> _binary;
-    Map<String, String> _octal;
+    Map<String, dynamic> _octal;
     Map<String, dynamic> _hexadecimal;
 
     ConversionCalculator _calculator = new ConversionCalculator();
@@ -47,26 +48,23 @@ class ConversionHelper {
               subtitle: 'Base-8',
             ),
             Item(
-              headerValue: 'Hexadecimal Result: ${_hexadecimal['hexNum']}',
-              expandedValue: FourColumnTable(
-                powerCalc: _hexadecimal['powerCalc'],
-                restCalc: _hexadecimal['restCalc'],
-                rest: _hexadecimal['rest'],
-                interimResult: _hexadecimal['interimResult'],
-              ),
-              subtitle: 'Base-16'
-            ),
+                headerValue: 'Hexadecimal Result: ${_hexadecimal['hexNum']}',
+                expandedValue: FourColumnTable(
+                  powerCalc: _hexadecimal['powerCalc'],
+                  restCalc: _hexadecimal['restCalc'],
+                  rest: _hexadecimal['rest'],
+                  interimResult: _hexadecimal['interimResult'],
+                ),
+                subtitle: 'Base-16'),
           ];
-        }
-        else
+        } else
           CustomSnackbar.show(context, 'Please enter a valid decimal number');
         break;
       case 'binary':
         // Check for valid number
         bool _isValid = true;
         for (int i = 0; i < value.length; i++) {
-          if (value[i] != '0' && value[i] != '1')
-          {
+          if (value[i] != '0' && value[i] != '1') {
             _isValid = false;
             break;
           }
@@ -80,8 +78,10 @@ class ConversionHelper {
           _dataResult = [
             Item(
               headerValue: 'Decimal Result: ${_decimal['decNum']}',
-              expandedValue: OneColumnTable(calculation: _decimal['calc'],),
-              subtitle: 'Base-10'
+              expandedValue: OneColumnTable(
+                calculation: _decimal['calc'],
+              ),
+              subtitle: 'Base-10',
             ),
             Item(
               headerValue: 'Octal Result: ${_octal['octNum']}',
@@ -92,7 +92,7 @@ class ConversionHelper {
                 secondColumnBody: _octal['octBlock'],
                 interimResult: _octal['interimResult'],
               ),
-              subtitle: 'Base-8'
+              subtitle: 'Base-8',
             ),
             Item(
               headerValue: 'Hexadecimal Result ${_hexadecimal['hexNum']}',
@@ -103,11 +103,10 @@ class ConversionHelper {
                 secondColumnBody: _hexadecimal['hexBlock'],
                 interimResult: _hexadecimal['interimResult'],
               ),
-              subtitle: 'Base-16'
+              subtitle: 'Base-16',
             ),
           ];
-        }
-        else
+        } else
           CustomSnackbar.show(context, 'Please enter a valid binary number');
         break;
       case 'octal':
@@ -129,12 +128,14 @@ class ConversionHelper {
         _decimal = _calculator.convertOctalToDecimal(value);
         _binary = _calculator.convertOctalToBinary(value);
         _hexadecimal = _calculator.convertOctalToHexadecimal(value);
-        
+
         _dataResult = [
           Item(
             headerValue: 'Decimal Result: ${_decimal['decNum']}',
-            expandedValue: OneColumnTable(calculation: _decimal['calc'],),
-            subtitle: 'Base-10'
+            expandedValue: OneColumnTable(
+              calculation: _decimal['calc'],
+            ),
+            subtitle: 'Base-10',
           ),
           Item(
             headerValue: 'Binary Result: ${_binary['binNum']}',
@@ -145,21 +146,98 @@ class ConversionHelper {
               secondColumnBody: _binary['binBlock'],
               interimResult: _binary['interimResult'],
             ),
-            subtitle: 'Base-2'
+            subtitle: 'Base-2',
           ),
           Item(
             headerValue: 'Hexadecimal Result: ${_hexadecimal['hexNum']}',
             expandedValue: OneColumnTableWithSecondCalc(
-              calculation: '\nOctal to Decimal:\n${_hexadecimal['decCalc']}\n\nDecimal to Hexadecimal:\n',
+              firstCalculationHeader: '\nOctal to Decimal:\n',
+              firstCalculation: Text(
+                _hexadecimal['decCalc'],
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300,
+                  color: ThemeProvider.themeOf(context).data.primaryColor,
+                ),
+              ),
+              secondaryCalculationHeader: '\n\nDecimal to Hexadecimal:\n',
               secondaryCalculaction: _hexadecimal['hexCalc'],
             ),
-            subtitle: 'Base-16'
+            subtitle: 'Base-16',
           ),
         ];
 
         break;
       case 'hexadecimal':
         // Check for valid number
+        List<String> hexDigits = [
+          '0',
+          '1',
+          '2',
+          '3',
+          '4',
+          '5',
+          '6',
+          '7',
+          '8',
+          '9',
+          'A',
+          'B',
+          'C',
+          'D',
+          'E',
+          'F'
+        ];
+        try {
+          for (int i = 0; i < value.length; i++) {
+            if (hexDigits.contains(value[i].toUpperCase()))
+              continue;
+            else {
+              throw FormatException();
+            }
+          }
+        } on FormatException {
+          CustomSnackbar.show(
+              context, 'Please enter a valid hexadecimal number');
+          break;
+        }
+
+        _decimal = _calculator.convertHexadecimalToDecimal(value.toUpperCase());
+        _binary = _calculator.convertHexadecimalToBinary(value);
+        _octal = _calculator.convertHexadecimalToOctal(value);
+
+        _dataResult = [
+          Item(
+            headerValue: 'Decimal Result: ${_decimal['decNum']}',
+            expandedValue: OneColumnTable(
+              calculation: _decimal['calculation'],
+            ),
+            subtitle: 'Base-10',
+          ),
+          Item(
+            headerValue: 'Binary Result: ${_binary['binNum']}',
+            expandedValue: ThreeColumnTable(
+              firstColumnHead: 'hexadecimal',
+              firstColumnBody: _binary['hexBlock'],
+              secondColumnHead: 'binary',
+              secondColumnBody: _binary['binBlock'],
+              interimResult: _binary['interimResult'],
+            ),
+            subtitle: 'Base-2',
+          ),
+          Item(
+            headerValue: 'Octal Result: ${_octal['octNum']}',
+            expandedValue: OneColumnTableWithSecondCalc(
+              firstCalculationHeader: '\nHexadecimal to Binary:\n',
+              firstCalculation: _octal['binCalc'],
+              secondaryCalculationHeader: '\n\nBinary to Octal:\n',
+              secondaryCalculaction: _octal['octCalc'],
+            ),
+            subtitle: 'Base-16',
+          ),
+        ];
         break;
     }
 

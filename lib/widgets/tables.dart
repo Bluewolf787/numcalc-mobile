@@ -164,23 +164,21 @@ class OneColumnTable extends StatelessWidget {
             ),
           ],
         ),
-        TableRow(
-          children: <Widget>[
-            Center(
-              heightFactor: 4,
-              child: Text(
-                calculation,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  color: ThemeProvider.themeOf(context).data.primaryColor,
-                ),
+        TableRow(children: <Widget>[
+          Center(
+            heightFactor: 4,
+            child: Text(
+              calculation,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 12,
+                fontWeight: FontWeight.w300,
+                color: ThemeProvider.themeOf(context).data.primaryColor,
               ),
             ),
-          ]
-        )
+          ),
+        ])
       ],
     );
   }
@@ -342,7 +340,6 @@ class FourColumnTable extends StatelessWidget {
       ),
       defaultColumnWidth: FlexColumnWidth(),
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      
       children: <TableRow>[
         TableRow(
           children: <Widget>[
@@ -462,70 +459,85 @@ class FourColumnTable extends StatelessWidget {
 }
 
 class OneColumnTableWithSecondCalc extends StatelessWidget {
-    const OneColumnTableWithSecondCalc({
-      Key key,
-      @required this.calculation,
-      @required this.secondaryCalculaction,
-    }) : super(key: key);
-  
-    final String calculation;
-    final Widget secondaryCalculaction;
+  const OneColumnTableWithSecondCalc({
+    Key key,
+    @required this.firstCalculationHeader,
+    @required this.firstCalculation,
+    @required this.secondaryCalculationHeader,
+    @required this.secondaryCalculaction,
+  }) : super(key: key);
 
-    @override
-    Widget build(BuildContext context) {
-      return Table(
-        border: TableBorder(
-          horizontalInside: BorderSide(
-            width: 1,
-            color: ThemeProvider.themeOf(context).data.dividerColor,
-            style: BorderStyle.solid,
-          ),
-          verticalInside: BorderSide(
-            width: 1,
-            color: ThemeProvider.themeOf(context).data.dividerColor,
-            style: BorderStyle.solid,
-          ),
+  final String firstCalculationHeader;
+  final String secondaryCalculationHeader;
+  final Widget firstCalculation;
+  final Widget secondaryCalculaction;
+
+  @override
+  Widget build(BuildContext context) {
+    return Table(
+      border: TableBorder(
+        horizontalInside: BorderSide(
+          width: 1,
+          color: ThemeProvider.themeOf(context).data.dividerColor,
+          style: BorderStyle.solid,
         ),
-        defaultColumnWidth: FlexColumnWidth(),
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        children: <TableRow>[
-          TableRow(
-            children: <Widget>[
-              Center(
-                child: Text(
-                  'calculation'.toUpperCase(),
+        verticalInside: BorderSide(
+          width: 1,
+          color: ThemeProvider.themeOf(context).data.dividerColor,
+          style: BorderStyle.solid,
+        ),
+      ),
+      defaultColumnWidth: FlexColumnWidth(),
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      children: <TableRow>[
+        TableRow(
+          children: <Widget>[
+            Center(
+              child: Text(
+                'calculation'.toUpperCase(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: ThemeProvider.themeOf(context).data.primaryColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+        TableRow(
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  firstCalculationHeader,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 12,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w300,
                     color: ThemeProvider.themeOf(context).data.primaryColor,
                   ),
                 ),
-              ),
-            ],
-          ),
-          TableRow(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    calculation,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w300,
-                      color: ThemeProvider.themeOf(context).data.primaryColor,
-                    ),
+                firstCalculation,
+                Text(
+                  secondaryCalculationHeader,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w300,
+                    color: ThemeProvider.themeOf(context).data.primaryColor,
                   ),
-                  secondaryCalculaction,
-                ],
-              ),
-            ],
-          ),
-        ],
-      );
-    }
+                ),
+                secondaryCalculaction,
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
   }
+}
