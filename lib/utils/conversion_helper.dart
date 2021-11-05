@@ -120,7 +120,7 @@ class ConversionHelper {
             }
           }
         } on FormatException {
-          CustomSnackbar.show(context, 'Please enter a valid binary number');
+          CustomSnackbar.show(context, 'Please enter a valid octal number');
           break;
         }
 

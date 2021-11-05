@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.numcalc_mobile">
+    package="de.bluewolf.numcalc">
    <application
-        android:label="numcalc_mobile"
+        android:label="NumCalc"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

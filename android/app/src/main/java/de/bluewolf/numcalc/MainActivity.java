@@ -1,4 +1,4 @@
-package com.example.numcalc_mobile;
+package de.bluewolf.numcalc;
 
 import io.flutter.embedding.android.FlutterActivity;
 

@@ -138,7 +138,7 @@ class OneColumnTable extends StatelessWidget {
         ),
         TableRow(children: <Widget>[
           Center(
-            heightFactor: 4,
+            heightFactor: 1.5,
             child: Text(
               calculation,
               textAlign: TextAlign.center,
