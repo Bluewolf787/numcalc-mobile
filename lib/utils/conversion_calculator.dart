@@ -1,57 +1,30 @@
 import 'dart:math';
-
-import 'package:numcalc_mobile/widgets/expansion_panel_item.dart';
 import 'package:numcalc_mobile/widgets/tables.dart';
 
 class ConversionCalculator {
   Map<String, String> convertDecimalToBinary(int value) {
     Map<String, String> output = {
-      'binaryNum': '0b',
+      'binNum': '0b',
       'calculation': '',
       'rest': '',
-      'interimResult': ''
     };
 
-    if (value == 0) {
-      output['binaryNum'] += '0';
-      return output;
+    String binNum = '';
+
+    int rest = 0;
+    int saveValue = 0;
+    while (value != 0) {
+      saveValue = value;
+
+      rest = value % 2;
+      binNum += rest.toString();
+      value = (value / 2).floor();
+
+      output['calculation'] += '$value / 2 = $saveValue\n';
+      output['rest'] += '$rest\n';
     }
 
-    // Search the largest exponent
-    int exponent = 0;
-    while (pow(2, exponent) <= value) {
-      exponent += 1;
-
-      if (pow(2, exponent + 1) > value) break;
-    }
-
-    // Subtract the power of 2 with the largest exponent from value and write down a 1
-    int valueRest = value - pow(2, exponent);
-    output['binaryNum'] += '1';
-    output['calculation'] += '2^$exponent = ${pow(2, exponent)} < $value\n';
-    output['rest'] += '$value - ${pow(2, exponent)} = $valueRest\n';
-    output['interimResult'] += '${output['binaryNum']}\n';
-
-    // If the next lower exponent is less then valueRest Then write a 1 else a 0.
-    // Repeat until rest is 0
-    for (int i = 1; i <= exponent; i++) {
-      int newExponent = exponent - (i);
-      int power = pow(2, newExponent);
-
-      if (power > valueRest) {
-        output['binaryNum'] += '0';
-        output['calculation'] += '2^$newExponent = $power > $valueRest\n';
-        output['rest'] += '\n';
-        output['interimResult'] += '${output['binaryNum']}\n';
-      } else {
-        output['binaryNum'] += '1';
-        output['calculation'] += '2^$newExponent = $power < $valueRest\n';
-        output['rest'] += '$valueRest - $power = ${valueRest - power}\n';
-        output['interimResult'] += '${output['binaryNum']}\n';
-
-        valueRest = valueRest - power;
-      }
-    }
+    output['binNum'] = binNum.split('').reversed.join();
 
     return output;
   }
@@ -559,10 +532,8 @@ class ConversionCalculator {
     Map<String, dynamic> output = {'octNum': '', 'binCalc': '', 'octCalc': ''};
 
     Map<String, String> hexadecimalToBinary = convertHexadecimalToBinary(value);
-    print(hexadecimalToBinary);
     Map<String, String> binaryToOctal =
         convertBinaryToOctal(hexadecimalToBinary['binNum'].substring(2));
-    print(binaryToOctal);
 
     output['octNum'] = binaryToOctal['octNum'];
     output['binCalc'] = ThreeColumnTable(

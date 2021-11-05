@@ -29,11 +29,10 @@ class ConversionHelper {
           // Store all results in a list as expansion panel item
           _dataResult = [
             Item(
-              headerValue: 'Binary Result: ${_binary['binaryNum']}',
+              headerValue: 'Binary Result: ${_binary['binNum']}',
               expandedValue: BinaryTable(
                 calculation: _binary['calculation'],
                 rest: _binary['rest'],
-                interimResult: _binary['interimResult'],
               ),
               subtitle: 'Base-2',
             ),

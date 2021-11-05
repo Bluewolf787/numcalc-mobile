@@ -6,12 +6,10 @@ class BinaryTable extends StatelessWidget {
     Key key,
     @required this.calculation,
     @required this.rest,
-    @required this.interimResult,
   }) : super(key: key);
 
   final String calculation;
   final String rest;
-  final String interimResult;
 
   @override
   Widget build(BuildContext context) {
@@ -57,18 +55,6 @@ class BinaryTable extends StatelessWidget {
                 ),
               ),
             ),
-            Center(
-              child: Text(
-                'interim result'.toUpperCase(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: ThemeProvider.themeOf(context).data.primaryColor,
-                ),
-              ),
-            ),
           ],
         ),
         TableRow(
@@ -92,20 +78,6 @@ class BinaryTable extends StatelessWidget {
               child: Center(
                 child: Text(
                   rest,
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: ThemeProvider.themeOf(context).data.primaryColor,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-              child: Center(
-                child: Text(
-                  interimResult,
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 12,
