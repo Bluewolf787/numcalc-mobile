@@ -20,7 +20,7 @@ class ConversionCalculator {
       binNum += rest.toString();
       value = (value / 2).floor();
 
-      output['calculation'] += '$value / 2 = $saveValue\n';
+      output['calculation'] += '$saveValue / 2 = $value\n';
       output['rest'] += '$rest\n';
     }
 
@@ -216,7 +216,7 @@ class ConversionCalculator {
       '1011': 'B',
       '1100': 'C',
       '1101': 'D',
-      '11    10': 'E',
+      '1110': 'E',
       '1111': 'F'
     };
 
